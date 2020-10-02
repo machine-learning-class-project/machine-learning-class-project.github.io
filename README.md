@@ -1,3 +1,5 @@
+## Video 
+Here is a link to the video for our proposal: [https://youtu.be/szckVm3BSAI](https://youtu.be/szckVm3BSAI)
 ## Introduction 
 The National Bridge Inventory (NBI) is a publication of the United States Federal Highway Administration (FHWA) which provides records on the location, design, and condition of the nation’s bridge infrastructure. Many of the structures in this database are aging and it will be incumbent on the next generation of civil engineers to understand the relevant factors that influence bridge deterioration over time, and develop our ability to predict future deterioration. The 2019 NBI dataset provides over 600,000 individual bridge records, each with over 120 data dimensions. Records are available for each year since 1992, with standardized records available since 1995 when FHWA published Recoding and Coding Guide for the Structure Inventory and Appraisal of the Nation’s Bridges.
 
