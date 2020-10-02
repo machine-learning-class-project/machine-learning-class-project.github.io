@@ -18,5 +18,7 @@ Machine learning techniques have been applied to the NBI and to similar datasets
 
 ## References 
 [1] Mosbeh R. Kaloop, Sherif M. El-Badawy, Jungkyu Ahn, Hyoung-Bo Sim, Jong Wan Hu, Ragaa T. Abd El-Hakim. (2020) A hybrid wavelet-optimally-pruned extreme learning machine model for the estimation of international roughness index of rigid pavements. International Journal of Pavement Engineering 0:0, pages 1-15. 
+
 [2] Yajima, Ayako, et al. “A Clustering Based Method to Evaluate Soil Corrosivity for Pipeline External Integrity Management.” International Journal of Pressure Vessels and Piping, vol. 126-127, 2015, pp. 37–47., doi:10.1016/j.ijpvp.2014.12.004. 
+
 [3]  Bektas, B. “Use of Recursive Partitioning to Predict National Bridge Inventory Condition Ratings from National Bridge Elements Condition Data”. Transportation Research Record: Journal of the Transportation Research Board, 2017. 2612: 29–38
