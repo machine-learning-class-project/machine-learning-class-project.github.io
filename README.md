@@ -61,44 +61,44 @@ The second attempt at clustering uses a density based clustering approach. Due t
 
 First attempts at density clustering indicate that there is in fact a majority of clusters holding most bridges and a minority of clusters holding outlier bridges. Again, the scikit learn implementation of DBSCAN was used to perform clustering. In this implementation, epsilon values for maximum distance must be defined. A common epsilon value of .5 was used to start and plan to test best fit for a range of epsilon values shortly to select the best value for further analysis. Figure 6 shows a frequency mapping of initial DBSCAN methods. 
 
-array([[   -1,   466],
-       [    0, 26850],
-       [    1,   784],
-       [    2,   902],
-       [    3,   563],
-       [    4,   324],
-       [    5,    48],
-       [    6,   230],
-       [    7,    62],
-       [    8,    79],
-       [    9,     9],
-       [   10,    48],
-       [   11,   215],
-       [   12,    17],
-       [   13,    41],
-       [   14,     5],
-       [   15,    13],
-       [   16,     9],
-       [   17,    53],
-       [   18,    13],
-       [   19,     9],
-       [   20,     5],
-       [   21,     8],
-       [   22,     5],
-       [   23,    16],
-       [   24,     7],
-       [   25,     8],
-       [   26,     5],
-       [   27,     6],
-       [   28,     6],
-       [   29,     5],
-       [   30,     5],
-       [   31,     6],
-       [   32,     6],
-       [   33,     5],
-       [   34,     6],
-       [   35,     5],
-       [   36,     6]])
+array([[   -1,   466],\
+       [    0, 26850],\
+       [    1,   784],\
+       [    2,   902],\
+       [    3,   563],\
+       [    4,   324],\
+       [    5,    48],\
+       [    6,   230],\
+       [    7,    62],\
+       [    8,    79],\
+       [    9,     9],\
+       [   10,    48],\
+       [   11,   215],\
+       [   12,    17],\
+       [   13,    41],\
+       [   14,     5],\
+       [   15,    13],\
+       [   16,     9],\
+       [   17,    53],\
+       [   18,    13],\
+       [   19,     9],\
+       [   20,     5],\
+       [   21,     8],\
+       [   22,     5],\
+       [   23,    16],\
+       [   24,     7],\
+       [   25,     8],\
+       [   26,     5],\
+       [   27,     6],\
+       [   28,     6],\
+       [   29,     5],\
+       [   30,     5],\
+       [   31,     6],\
+       [   32,     6],\
+       [   33,     5],\
+       [   34,     6],\
+       [   35,     5],\
+       [   36,     6]])\
 *Figure 6. Frequency mapping of initial DBSCAN methods.*
 
 ## Results
