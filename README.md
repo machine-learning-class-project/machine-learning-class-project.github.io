@@ -61,7 +61,7 @@ The second attempt at clustering uses a density based clustering approach. Due t
 
 First attempts at density clustering indicate that there is in fact a majority of clusters holding most bridges and a minority of clusters holding outlier bridges. Again, the scikit learn implementation of DBSCAN was used to perform clustering. In this implementation, epsilon values for maximum distance must be defined. A common epsilon value of .5 was used to start and plan to test best fit for a range of epsilon values shortly to select the best value for further analysis. Figure 6 shows a frequency mapping of initial DBSCAN methods. 
 
-![dbscan frequency](dbscanfreq.PNG){:height="100%" width="100%"}
+![dbscan frequency](dbscanfreq.PNG)
 *Figure 6. Frequency mapping of initial DBSCAN methods.*
 
 ## Results
