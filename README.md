@@ -10,6 +10,15 @@ More broadly, we aim to create a tool to identify at-risk bridges based on the d
 ### Collection 
 We are working with the 2019 NBI dataset published by the Federal Highway Administration for all the bridges across every state in the United States. This dataset is available as a .csv file on the FHWA webpage and contains a total of 617,0084 data points with 123 data dimensions. Much of the input formatting of this data predates widespread digital data recording and as such, some entries must be preprocessed to obtain a relevant meaning that can be used in machine learning algorithms. For example, the most recent bridge inspection date is encoded as a 3 or 4 digit number which represents the month and year of the most recent inspection.
 
+### Initial Data Inspection
+Figure 1 shows the distribution of missing values in our entire dataset, and Figure 2 shows only those features which contain missing values. Both figures demonstrate that select features are very sparse while others have a small number of missing features. The degree of sparsity was used in the feature selection process for subsequent models. Please refer to our linked NBI descriptors spreadsheet for an explanation of the features and the assessment of its relevance.  Those features which have a large number of missing features were determined to not be highly relevant to the determination of a bridge's integrity. 
+
+![figure 1](figure1.png){:height="100%" width="100%"}
+*Figure 1. A bar chart of the raw data set where existing data is represented in gray and missing values are represented in white.*
+ 
+![figure 2](figure2.png){:height="100%" width="100%"}
+*Figure 2. A bar chart of features which have missing values.*
+
 ### Feature Selection 
 With 123 data dimensions, it is possible that there may be too many dimensions to obtain relevant results from machine learning algorithms or that the results may be deceptive and not reflect any actual field conditions. With this possibility in mind, the dimensions of the dataset were initially reduced to only those with a potentially relevant engineering meaning. This process is not to be confused with dimensionality reduction. The assessment of relevant features was based entirely on engineering judgement by members of the group who hold civil engineering degrees. While not perfect, there is reason to believe that this simplification improves the quality of the dataset. Each dimension and our assessment of its relevance can be found here. In general, dimensions related to administrative bureaucracy were discarded from the dataset (ex: route designation), alongside dimensions with no clear relationship to bridge condition (ex: clear distance between the abutments and vegetation).
  
@@ -18,6 +27,22 @@ Since the goal of this project is to predict condition scores based on other fac
 Below is a covariance heatmap for all of the relevant features and condition scores for our data. Features such as the year built, number of traffic lanes, structure type, scour critical values and high truck traffic values seems to have an impact of the condition scores for the bridge. This initial analysis uncovers relationships between features that might be important to consider as we conduct further work. 
 
 ![covariance matrix](cov%20matrix.png){:height="100%" width="100%"}
+*Figure 3. Covariance heatmap of selected relevant features and condition scores.*
+
+### Cleaning 
+After selecting the relevant features, features containing null values were identified. It was found that the Year Reconstructed and Percent Average Daily Traffic (ADT) of Trucks columns both had high numbers of null values (Figure 4). It was assumed that the Year Reconstructed null values meant that the bridge had never been reconstructed. For Percent ADT Truck we assumed null values signified a percentage of zero. After accounting for these null values and clearing the data for the remaining null values only 78 data points out of the more than 600,000 data points were lost.
+
+![figure 4](figure4.png){:height="100%" width="100%"}
+*Figure 4. Bar chart of missing values for features Year Reconstructed and Percent ADT Truck.*
+
+### Feature Engineering 
+Some columns contained a mixture of integer and string values. For example, the scour critical values ranged from 0 to 9 and also contained values of N, U, or T. To adjust our data so that it contained only numeric representations, string values were mapped to numeric values not already contained within the original scale. Similar changes were made to the fracture, underwater inspection, and special inspection features. This ensured a completely numerical data set that did not contain any null values and was ready for analysis. 
+ 
+### Normalization 
+Because there are a wide variety of features, many of which have vastly different scales, it is important that the selected features are normalized. Some features have simple scales only a few digits in size, while other features, like location coordinates and age have much wider ranges. Normalization will ensure that each chosen feature has the same weight or contribution in each clustering calculation. 
+ 
+### Mapping Functions
+The data in the NBI is coded with short numerical or alphabetical codes representing complex strings or slightly different numerical values depending on the context. To get around this issue, mapping functions were created for each relevant data dimension that relates the code in the NBI dataset to its literal meaning. For example, the NBI codes for longitude and latitude which are present in the dataset as a series of eight or nine digits ([x]xxxxxxxx), represent the geographical coordinates of the bridge in the format [x]xx degrees, xx minutes, xx.xx seconds. This information needs to be properly processed by converting it to decimal degrees before it can be meaningful in any algorithm. Some information is not as complex to decode. An example of this would be the type of structural system of each bridge which is a two digit number that maps directly to a string description of the structure type. These functions are critical for interpreting the results of clustering and other algorithms.
 
 ## Methods 
 Using both unsupervised and supervised learning, we hope to uncover insights into the similarity, integrity, and lifespan of bridges across the United States. Using clustering techniques, including but not limited to k-means, GMMs, and hierarchical clustering, we hope to group bridges based on their numerous characteristics. These clusters may be useful to inspectors and engineers in understanding features that are common among various groups of bridges, for instance, the features correlated to condition scorings for bridges [2]. Via supervised learning, we hope to predict key indicators of a bridges’ condition which are hard for inspectors to estimate and prone to bias. By means of Random Forests, SVMs, or ANNs, we think making such predictions is quite possible. We hope to produce a classification of bridges’ integrity with such supervised learning methods and discretization of key features from our data set. Using the provided data points in our set, we should be able to produce a condition prediction [1]. By comparing the accuracy and results of these supervised learning methods, we hope to determine a suitable model which might be used in helping inspectors and owners determine the state of bridges. 
