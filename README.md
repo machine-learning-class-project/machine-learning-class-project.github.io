@@ -53,7 +53,7 @@ The first clustering attempt uses KMeans as it is one of the simplest clustering
 
 The optimal number of clusters is unknown, therefore iteration over possible numbers of clusters to determine which might be best to use was executed. First, KMeans was run on our dataset, which takes each datapoint and assigns it to the nearest centroid k. This was repeated for each point. Then the resulting cluster labels for each point are compared with the original data using a silhouette coefficient. This is recorded for each step and the process is restarted with k+1 fixed clusters. After many iterations, the silhouette coefficients are graphed and compared to find the maximum value. The maximum value indicates the cluster k with highest cohesion and separation. This clustering is then used with fixed max k for further analysis.
 
-![kmeans silhouette](kmeansilhouette.PNG){:height="100%" width="100%"}
+![kmeans silhouette](kmeansilhouette.png){:height="100%" width="100%"}
 *Figure 5. Plot of silhouette coefficients vs number of clusters.*
 
 ### DBSCAN
