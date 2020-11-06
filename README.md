@@ -75,16 +75,16 @@ Figures 7 through 10 are visualizations of results from KMeans clustering. In pa
 *Figure 7. Visualization of KMeans clustering by state.*
 
 ![kmeans owner](KMeans-owners-cluster.png){:height="100%" width="100%"}
-Figure 8. Visualization of KMeans clustering by owner.
+*Figure 8. Visualization of KMeans clustering by owner.*
 
 ![kmeans design load](KMeans-designload-clusters.png){:height="100%" width="100%"}
-Figure 9. Visualization of KMeans clustering by design load type.
+*Figure 9. Visualization of KMeans clustering by design load type.*
 
 ![kmeans geographic location](KMeans-latlon-clusters.png){:height="100%" width="100%"}
-Figure 10. Visualization of KMeans clustering by geographic location.
+*Figure 10. Visualization of KMeans clustering by geographic location.*
 
 ![kmeans geographic location structure](structurekind-for-comparision.png){:height="100%" width="100%"}
-Figure 11. Visualization of structure type by geographic location.
+*Figure 11. Visualization of structure type by geographic location.*
 
 ## Discussion
 Initial clustering evaluation has shown that some structural and loading features are able to create meaningful clustering relationships as evidenced in the latitude-longitude scatter plots (Figures 10 and 11). However, clustering appears to be more sensitive to juristitional distinctions than anticipated. An example of this is the clustering by states shown for KMeans clustering (Figure 7). The largest two clusters are distinguished by states ranked in alphabetical (and therefore numerical) order. This indicates that these two groups are being clustered predominantly by their alphabetical proximity to other states, which is not meaningful from an engineering standpoint. Future clustering may choose to treat these features as labels and not as dimensions for clustering. The labeling will then be used to assess whether structural and loading features are predicted by jurisdictional location. Regardless, further analysis of the results of clustering is needed to determine the best algorithms and dimensions to use in generating meaningful clusters. One method through which we can analyze our clustering algorithms is to utilize the bridge condition scores as ground truth values and perform matching based measures such as purity and maximum matching. 
