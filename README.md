@@ -102,7 +102,6 @@ array([[   -1,   466],
 *Figure 6. Frequency mapping of initial DBSCAN methods.*
 
 ## Results
-
 ### Unsupervised
 The following are the visualization of results from KMeans clustering. The motivation behind using clustering is that clusters may provide insight into common features among various groups of bridges.
 
@@ -124,11 +123,9 @@ Figure 10. Visualization of KMeans clustering by geographic location.
 ![kmeans geographic location structure](structurekind-for-comparision.png){:height="100%" width="100%"}
 Figure 11. Visualization of structure type by geographic location.
 
-
 ## Discussion
 Initial clustering evaluation has shown that some structural and loading features are able to create meaningful clustering relationships as evidenced in the latitude-longitude scatter plots (Figures 10 and 11). However, clustering appears to be more sensitive to juristitional distinctions than anticipated. An example of this is the clustering by states shown for KMeans clustering (Figure 7). The largest two clusters are distinguished by states ranked in alphabetical (and therefore numerical) order. This indicates that these two groups are being clustered predominantly by their alphabetical proximity to other states, which is not meaningful from an engineering standpoint. Future clustering may choose to treat these features as labels and not as dimensions for clustering. The labeling will then be used to assess whether structural and loading features are predicted by jurisdictional location. Regardless, further analysis of the results of clustering is needed to determine the best algorithms and dimensions to use in generating meaningful clusters. One method through which we can analyze our clustering algorithms is to utilize the bridge condition scores as ground truth values and perform matching based measures such as purity and maximum matching. 
 Future work will use supervised learning techniques to predict bridge condition scores based on other features of the NBI dataset. The supervised learning techniques we plan on utilizing in the future include ANN, SVM, and random forests. 
-
 
 ## References 
 [1] ASCE's 2017 Infrastructure Report Card. 2017. Bridges. [online] Available at: <https://www.infrastructurereportcard.org/cat-item/bridges/> [Accessed: 5 November 2020].
