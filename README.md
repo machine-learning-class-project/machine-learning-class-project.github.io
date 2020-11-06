@@ -19,6 +19,7 @@ Below is a covariance heatmap for all of the relevant features and condition sco
 
 <img src="cov%20matrix.png",
 width="100%"/>
+![](cov%20matrix.png){:height="100%" width="100%"}
 
 ## Methods 
 Using both unsupervised and supervised learning, we hope to uncover insights into the similarity, integrity, and lifespan of bridges across the United States. Using clustering techniques, including but not limited to k-means, GMMs, and hierarchical clustering, we hope to group bridges based on their numerous characteristics. These clusters may be useful to inspectors and engineers in understanding features that are common among various groups of bridges, for instance, the features correlated to condition scorings for bridges [2]. Via supervised learning, we hope to predict key indicators of a bridges’ condition which are hard for inspectors to estimate and prone to bias. By means of Random Forests, SVMs, or ANNs, we think making such predictions is quite possible. We hope to produce a classification of bridges’ integrity with such supervised learning methods and discretization of key features from our data set. Using the provided data points in our set, we should be able to produce a condition prediction [1]. By comparing the accuracy and results of these supervised learning methods, we hope to determine a suitable model which might be used in helping inspectors and owners determine the state of bridges. 
