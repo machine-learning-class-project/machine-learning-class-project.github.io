@@ -17,8 +17,8 @@ Since the goal of this project is to predict condition scores based on other fac
  
 Below is a covariance heatmap for all of the relevant features and condition scores for our data. Features such as the year built, number of traffic lanes, structure type, scour critical values and high truck traffic values seems to have an impact of the condition scores for the bridge. This initial analysis uncovers relationships between features that might be important to consider as we conduct further work. 
 
-<img src="cov%20matrix.png",
-width="100%"/>
+<img src="cov%20matrix.png"/>
+
 ![](cov%20matrix.png){:height="100%" width="100%"}
 
 ## Methods 
