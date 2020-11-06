@@ -2,7 +2,7 @@
 Aging infrastructure in the United States is not only a safety concern, but an issue that costs taxpayers millions of dollars per year. Captured under the large umbrella of infrastructure is a network of over 600,000 bridges where nearly 40% are 50 years or older [1]. From the 2017 ASCE Infrastructure Report Card, it was determined that 9.1% of bridges are structurally deficient which translates to residents making an average of 188 million trips across structurally deficient bridges every day. These statistics are based on the bridge inspections conducted regularly and recorded in the National Bridge Inventory.
 The National Bridge Inventory (NBI) is a publication of the United States Federal Highway Administration (FHWA) which provides records on the location, design, and condition of the nation’s bridge infrastructure. The 2019 NBI dataset provides over 600,000 individual bridge records, each with over 120 data dimensions. Records are available for each year since 1992, with standardized records available since 1995 when FHWA published Recoding and Coding Guide for the Structure Inventory and Appraisal of the Nation’s Bridges.
 
-## Problem definition 
+## Problem Definition 
 The volume of available data over time and numerous, well defined dimensions allows for the application of several machine learning techniques to the NBI. Through unsupervised machine learning, this project will provide insight into the commonalities between bridges across differing geographic, jurisdictional, design, and condition descriptors, and the computational procedures for identifying outlier bridges from the database for further study. Supervised machine learning techniques will identify the most predictive factors for bridge deterioration and generate a fitted regression model for predicting bridge condition based on other factors. Specifically, these methods will allow researchers and transportation officials to predict the condition ratings of bridges before or without performing inspections. This could potentially reduce the needed inspection frequency for certain bridges, increase inspection frequency for critical bridges, and identify errors or jurisdictional inconsistencies in reporting bridge condition.
 More broadly, we aim to create a tool to identify at-risk bridges based on the data from the NBI in order to prioritize or inform bridge inspections and their frequency, effectively prepare for the possible effects of natural disasters on at-risk bridges, and enable more efficient allocation of government infrastructure funding. Ultimately, this would create a safer network of bridges and build confidence in US infrastructure.
 
@@ -45,16 +45,91 @@ Because there are a wide variety of features, many of which have vastly differen
 The data in the NBI is coded with short numerical or alphabetical codes representing complex strings or slightly different numerical values depending on the context. To get around this issue, mapping functions were created for each relevant data dimension that relates the code in the NBI dataset to its literal meaning. For example, the NBI codes for longitude and latitude which are present in the dataset as a series of eight or nine digits ([x]xxxxxxxx), represent the geographical coordinates of the bridge in the format [x]xx degrees, xx minutes, xx.xx seconds. This information needs to be properly processed by converting it to decimal degrees before it can be meaningful in any algorithm. Some information is not as complex to decode. An example of this would be the type of structural system of each bridge which is a two digit number that maps directly to a string description of the structure type. These functions are critical for interpreting the results of clustering and other algorithms.
 
 ## Methods 
-Using both unsupervised and supervised learning, we hope to uncover insights into the similarity, integrity, and lifespan of bridges across the United States. Using clustering techniques, including but not limited to k-means, GMMs, and hierarchical clustering, we hope to group bridges based on their numerous characteristics. These clusters may be useful to inspectors and engineers in understanding features that are common among various groups of bridges, for instance, the features correlated to condition scorings for bridges [2]. Via supervised learning, we hope to predict key indicators of a bridges’ condition which are hard for inspectors to estimate and prone to bias. By means of Random Forests, SVMs, or ANNs, we think making such predictions is quite possible. We hope to produce a classification of bridges’ integrity with such supervised learning methods and discretization of key features from our data set. Using the provided data points in our set, we should be able to produce a condition prediction [1]. By comparing the accuracy and results of these supervised learning methods, we hope to determine a suitable model which might be used in helping inspectors and owners determine the state of bridges. 
+### Unsupervised
+Several unsupervised clustering approaches including KMeans and DBSCAN have been applied. The motivation behind using clustering is that clusters may provide insight into common features among various groups of bridges. 
 
+### KMeans
+The first clustering attempt uses KMeans as it is one of the simplest clustering algorithms available. This implementation uses the scikit learn clustering library, where a fixed number of clusters can be specified for the algorithm to compute clusters for each datapoint. 
 
-## Potential Results 
-The predictive aspects of this project will allow bridge inspectors and owners to define their expectations for bridge condition ratings and to identify potential errors in inspection or reporting data, as well as identify bridges that may require additional inspection scrutiny or maintenance. Time-dependent condition prediction models will assist owners in scheduling maintenance as well as making economical decisions about the design, location, and upkeep of their bridge infrastructure. 
+The optimal number of clusters is unknown, therefore iteration over possible numbers of clusters to determine which might be best to use was executed. First, KMeans was run on our dataset, which takes each datapoint and assigns it to the nearest centroid k. This was repeated for each point. Then the resulting cluster labels for each point are compared with the original data using a silhouette coefficient. This is recorded for each step and the process is restarted with k+1 fixed clusters. After many iterations, the silhouette coefficients are graphed and compared to find the maximum value. The maximum value indicates the cluster k with highest cohesion and separation. This clustering is then used with fixed max k for further analysis.
+
+![kmeans silhouette](kmeansilhouette.PNG){:height="100%" width="100%"}
+*Figure 5. Plot of silhouette coefficients vs number of clusters.*
+
+### DBSCAN
+The second attempt at clustering uses a density based clustering approach. Due to the nature of density based clustering, this approach may help us detect anomalies in the dataset, where sets of bridges stand far apart from the majority. It is important to examine each of these clusters to determine the reason for separate clustering. This could provide insight into feature groups that predict poor bridge integrity. 
+
+First attempts at density clustering indicate that there is in fact a majority of clusters holding most bridges and a minority of clusters holding outlier bridges. Again, the scikit learn implementation of DBSCAN was used to perform clustering. In this implementation, epsilon values for maximum distance must be defined. A common epsilon value of .5 was used to start and plan to test best fit for a range of epsilon values shortly to select the best value for further analysis. Figure 6 shows a frequency mapping of initial DBSCAN methods. 
+
+array([[   -1,   466],
+       [    0, 26850],
+       [    1,   784],
+       [    2,   902],
+       [    3,   563],
+       [    4,   324],
+       [    5,    48],
+       [    6,   230],
+       [    7,    62],
+       [    8,    79],
+       [    9,     9],
+       [   10,    48],
+       [   11,   215],
+       [   12,    17],
+       [   13,    41],
+       [   14,     5],
+       [   15,    13],
+       [   16,     9],
+       [   17,    53],
+       [   18,    13],
+       [   19,     9],
+       [   20,     5],
+       [   21,     8],
+       [   22,     5],
+       [   23,    16],
+       [   24,     7],
+       [   25,     8],
+       [   26,     5],
+       [   27,     6],
+       [   28,     6],
+       [   29,     5],
+       [   30,     5],
+       [   31,     6],
+       [   32,     6],
+       [   33,     5],
+       [   34,     6],
+       [   35,     5],
+       [   36,     6]])
+*Figure 6. Frequency mapping of initial DBSCAN methods.*
+
+## Results
+
+### Unsupervised
+The following are the visualization of results from KMeans clustering. The motivation behind using clustering is that clusters may provide insight into common features among various groups of bridges.
+
+### KMeans 
+Figures 7 through 10 are visualizations of results from KMeans clustering. In particular, Figure 8 is an example of successfully incorporating jurisdictional features in a clustering algorithm; the bridges’ owner is not at all predictive of what cluster the bridge may fall into. Figure 10 is a representation of the clusters produced by KMeans clustering. Inter-state as well as intra-state geographic clustering is an encouraging result that suggests that environmental as well as jurisdictional factors are influencing the clustering algorithm. Further analysis will attempt to explain these influences. Also interestingly, the clusters shown in Figure 10 do not necessarily match well with Figure 11 which shows bridges by their structure type. This is a positive result and indicates that clustering is working beyond obvious distinguishing characteristics.
+
+![kmeans state](KMeans-state-clusters.png){:height="100%" width="100%"}
+*Figure 7. Visualization of KMeans clustering by state.*
+
+![kmeans owner](KMeans-owners-cluster.png){:height="100%" width="100%"}
+Figure 8. Visualization of KMeans clustering by owner.
+
+![kmeans design load](KMeans-designload-clusters.png){:height="100%" width="100%"}
+Figure 9. Visualization of KMeans clustering by design load type.
+
+![kmeans geographic location](KMeans-latlon-clusters.png){:height="100%" width="100%"}
+Figure 10. Visualization of KMeans clustering by geographic location.
+
+![kmeans geographic location structure](structurekind-for-comparision.png){:height="100%" width="100%"}
+Figure 11. Visualization of structure type by geographic location.
+
 
 ## Discussion
-Machine learning techniques have been applied to the NBI and to similar datasets before, but it has never included bridges across the entire United States (Bektas 2017). This project will provide insights that policy makers, architects, and engineers can use to make better judgments about their design and maintenance choices, as well as how the bridges in their jurisdictions compare to others across the country. In this project, machine learning is being applied to the NBI to refine the allocation of resources used for bridge construction and maintenance.
+Initial clustering evaluation has shown that some structural and loading features are able to create meaningful clustering relationships as evidenced in the latitude-longitude scatter plots (Figures 10 and 11). However, clustering appears to be more sensitive to juristitional distinctions than anticipated. An example of this is the clustering by states shown for KMeans clustering (Figure 7). The largest two clusters are distinguished by states ranked in alphabetical (and therefore numerical) order. This indicates that these two groups are being clustered predominantly by their alphabetical proximity to other states, which is not meaningful from an engineering standpoint. Future clustering may choose to treat these features as labels and not as dimensions for clustering. The labeling will then be used to assess whether structural and loading features are predicted by jurisdictional location. Regardless, further analysis of the results of clustering is needed to determine the best algorithms and dimensions to use in generating meaningful clusters. One method through which we can analyze our clustering algorithms is to utilize the bridge condition scores as ground truth values and perform matching based measures such as purity and maximum matching. 
+Future work will use supervised learning techniques to predict bridge condition scores based on other features of the NBI dataset. The supervised learning techniques we plan on utilizing in the future include ANN, SVM, and random forests. 
 
 
 ## References 
-[1] Mosbeh R. Kaloop, Sherif M. El-Badawy, Jungkyu Ahn, Hyoung-Bo Sim, Jong Wan Hu, Ragaa T. Abd El-Hakim. (2020) A hybrid wavelet-optimally-pruned extreme learning machine model for the estimation of international roughness index of rigid pavements. International Journal of Pavement Engineering 0:0, pages 1-15. 
-[2] Yajima, Ayako, et al. “A Clustering Based Method to Evaluate Soil Corrosivity for Pipeline External Integrity Management.” International Journal of Pressure Vessels and Piping, vol. 126-127, 2015, pp. 37–47., doi:10.1016/j.ijpvp.2014.12.004. 
+[1] ASCE's 2017 Infrastructure Report Card. 2017. Bridges. [online] Available at: <https://www.infrastructurereportcard.org/cat-item/bridges/> [Accessed: 5 November 2020].
+[2] “Public Disclosure of National Bridge Inventory (NBI) Data - National Bridge Inventory - Bridge Inspection - Safety - Bridges & Structures - Federal Highway Administration.” [Online]. Available: https://www.fhwa.dot.gov/bridge/nbi/20070517.cfm. [Accessed: 5 November 2020].
