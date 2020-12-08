@@ -94,11 +94,11 @@ After initial attempts, we obtained less than ideal accuracies when applying the
 
 Following this attempt, further examination of our data was required. Notice that the distribution of scores in each of the labels is far from balanced below:
 
-![image](1.PNG){:height="100%" width="100%"}
+![original distribution](1.PNG){:height="100%" width="100%"}
 
 After this relization, we concluded that a simple estimate of exact score may not be passible with the given data and labels. Classifiers were far overpredicting higher scores resulting on very low accuracy for examples with low condition scores in each of our 5 categories. We needed to find a better method to organize these labels and began by considering our intentions and purpose for building a classifier to begin with; we want to provide a means for which inspectors and municipalities can easily determine the general condition of a bridge using the features of a bridge. Considering this, we decided that we simply needed to tell inspectors of the condition was good, bad, or requiring further manual inspection. To do this with the provided labels, we grouped labels into 3 distinct groups for each of our 5 condition types: Good condition, Bad condition, and NA condition (requiring manual inspection). Good condition scores were formed from the top 3 best scores (7, 8, 9) which will likely need no attention as these scores represent a bridge in excellent health. Bad scores are reprentative of the bottom 6 score values (0, 1, 2, 3, 4, 5). These bad scores may need examination and maintenance in a short timespan. Finally, NA scores represented examples with sparse features and labels, which will require manual inspection to obtain a proper score. See the newly created distribution of labels in our augmented labels set below and noice a more evenly distributed set of labels in each category:
 
-![image](2.PNG){:height="100%" width="100%"}
+![new distribution](2.PNG){:height="100%" width="100%"}
 
 With these new label sets we obtained more respectable accuracy, which is detailed in out random forest results section. We attempted forming random forests of size 50, 100, and 150 using sklearn’s RandomFoestClassifier and found that forests of size 100 produced the most favoable results across the board.
 
@@ -107,15 +107,15 @@ With these new label sets we obtained more respectable accuracy, which is detail
 ### Neural Net
 In our attempts to build a simple neural net, we began by trying to create independent models for each of our condition types. Data is formatted and segregated into train and test splits with the same process used for random forests. One hot encoding for each condition type were also produced in a likewise manner. The input shape for all models was an array of length 29, which represents all of the relevant features included. The structure of this initial model was as follows:
 
-![image](3.PNG){:height="100%" width="100%"}
+![structure 1](3.PNG){:height="100%" width="100%"}
 
 This structure is composed of two fully connected dense layers, and followed by a logits layer, which will give the probability of an example belonging to one of 11 distinct classes. After examination of initial results for this model, we encountered the same issues as with random forests in regard to balanced labels. So, we reverted to the same approach used to form an augmented label set detailed above in the random forest section. A new model structure was necessary, as detailed below:
 
-![image](4.PNG){:height="100%" width="100%"}
+![structure 2](4.PNG){:height="100%" width="100%"}
 
 Notice that the logit layer shape decreases from 11 to 3, to correspond the the Good, Bad, and NA labels used from this point forward. This model produced more respectable results, with accuracies in the 50% to 60% range. Further refinement of the model structure and training process was necessary to improve accuracies. We begin by adding one more dense layer and increasing the size of dense layers. This may provide more opportunity for the model to capitalize on higher order features. We tried from 3 to 5 dense layers all with varying sizes ranging from 128 down to 16. Ultimately we found the following structure to be most successful:
 
-![image](5.PNG){:height="100%" width="100%"}
+![structure 3](5.PNG){:height="100%" width="100%"}
 
 This structure is composed of 3 dense layers of deceasing size followed by our logits layer. All models used binary cross entropy as a loss metric, and we adjusted other training parameters including optimizers, epochs, and batch size in various combinations as well. We tried Stocahstic Gradient Descent and Adaptive Momentum Estimation optimizers and found Adaptive Momentum Estimation to be most successful in converging and providing good accuracies. We believe this may be due to an ability of the adam optimizer to use adaptive learning rates, or independent rates for varios connections in the network. We tried epochs from 50 to 500, finding that 100 provided the best accuracies without overfitting, and we also tried batch sizes from 1,000 to 100,000 finding that higher batch sized generally resulted in quicker convergence at the loss of a more generalized model. Thus we opted to use batch sizes of 10,000 in order to have a balance of each. Using this process, we formed 5 independent models for each condition type. The performance of these models is detailed in the results section below.
 
@@ -161,11 +161,11 @@ Figure 10 is a representation of the clusters produced by KMeans clustering. Int
 ### PCA 
 Below is the screen plot generated from applying PCA to our data set. The first 20 components can explain 90% of the variance which means that we cannot actually reduce our data set by too many features as we apply supervised methods. 
 
-![image](6.PNG){:height="100%" width="100%"}
+![pc1](6.PNG){:height="100%" width="100%"}
 
 It can also be valuable to see what features make up the first principal component to see what features have a large influence on differentiating data points. Below is a graph of the loading scores for the features that make up the first principal component. 
 
-![image](7.PNG){:height="100%" width="100%"}
+![pc2](7.PNG){:height="100%" width="100%"}
 
 As expected, average daily traffic (ADT), as well as future ADT were significant splitting information. These are two of the most important features of any bridge structure’s design. Of the top 8 most contributory features, the six which do not capture an ADT metric, hold information about the surface area of the deck and the length of the bridge. Roadway width, deck width, and traffic lanes, in conjunction with ADT metrics, are expressing the relationship between how much traffic there is on a bridge, relative to that bridge's maximum traffic carrying capacity. From an engineering standpoint, bridges with high traffic volumes and low capacity would be expected to deteriorate faster than other bridges with the same designs. This is a highly logical and sound splitting judgement that PCA has unveiled. Furthermore, deck area, structure length, and max span length are all related to the length of a bridge. Long bridges with high traffic volumes and low capacity would be the bridges that engineers would naturally be most concerned about. This is good to note as longer bridges are more likely to be critical infrastructure components. Often very long bridges are the only alternative crossing over an obstacle for many miles and thus they are likely to carry a very high traffic volume as well as nearly all truck traffic in these areas. Again, PCA selecting bridge length as an important feature is logical and useful.
 
@@ -185,9 +185,9 @@ Notice that overall accuracies for each of our condition type models range from 
 
 *Deck Condition Random Forest*
 
-![image](drf1.PNG){:height="100%" width="100%"}
+![drf1](drf1.PNG){:height="100%" width="100%"}
 
-![image](drf2.PNG){:height="100%" width="100%"}
+![drf1](drf2.PNG){:height="100%" width="100%"}
 
 Predictions of deck condition based on the random forest model are good and the model is further validated by the relative importance of its features. The most feature in the classification is the type of structure. This is reasonable because the type of structure has a large influence on the design parameters of the deck, for example the thickness of the deck section, vibrations in the deck, joints, and even the material of the deck itself. That the model was able to arrive at this conclusion independently is impressive and indicates a reasonable result has been obtained independent of the accuracy of its predictions.
 
@@ -197,9 +197,9 @@ Year built is also a significant predictor of deck condition because additional 
 
 *Superstructure Condition Random Forest*
 
-![image](srf1.PNG){:height="100%" width="100%"}
+![srf1](srf1.PNG){:height="100%" width="100%"}
 
-![image](srf2.PNG){:height="100%" width="100%"}
+![srf2](srf2.PNG){:height="100%" width="100%"}
 
 For the same reasons as deck condition, the importance of features in predicting superstructure condition are quite reasonable. These two scores are predicted using very similar feature importance. However, notably, ADT metrics are slightly less significant in determining superstructure condition than in determining deck condition. This makes sense because the condition of a bridge's superstructure has more to do with environment, materials and maintenance than repeated loading.
 
@@ -207,9 +207,9 @@ For the same reasons as deck condition, the importance of features in predicting
 
 *Substructure Condition Random Forest*
 
-![image](xrf1.PNG){:height="100%" width="100%"}
+![xrf1](xrf1.PNG){:height="100%" width="100%"}
 
-![image](xrf2.PNG){:height="100%" width="100%"}
+![xrf2](xrf2.PNG){:height="100%" width="100%"}
 
 
 For substructure condition predictions, the most interesting note is the relative significance of structure length in the prediction. The bridge substructure is related to the superstructure and would be expected to have similar influencing factors. However the structure length had a much higher importance in determining substructure condition than superstructure condition. A possible explanation for this is that longer structures, particularly very long bridges such as causeways, have more piers and therefore more opportunities for substructure deterioration than shorter bridges.
@@ -218,9 +218,9 @@ For substructure condition predictions, the most interesting note is the relativ
 
 *Channel Condition Random Forest*
 
-![image](crf1.PNG){:height="100%" width="100%"}
+![crf1](crf1.PNG){:height="100%" width="100%"}
 
-![image](crf2.PNG){:height="100%" width="100%"}
+![crf2](crf2.PNG){:height="100%" width="100%"}
 
 Smartly, random forest classification identified scour conditions as by far the most important feature for channel condition classification. The model also reduced the importance of other features relative to other condition classifications such as deck width, which would have little engineering justification to affect scour conditions or the condition of the channel surrounding a bridge. Location, in the form of latitude and longitude also have a very high importance in this model relative to other classifications. This is reasonable because scour conditions have everything to do with water flow around the piers of a bridge and high gradient rivers or poor soil conditions are likely to be clustered geographically.
 
@@ -228,16 +228,16 @@ Smartly, random forest classification identified scour conditions as by far the 
 
 *Culvert Condition Random Forest*
 
-![image](urf1.PNG){:height="100%" width="100%"}
+![urf1](urf1.PNG){:height="100%" width="100%"}
 
-![image](urf2.PNG){:height="100%" width="100%"}
+![urf2](urf2.PNG){:height="100%" width="100%"}
 
 Notable in the prediction of culvert condition is that max span length is significantly important. This is so because culverts typically consist of only a single span. Also, random forest modeling has correctly noted that roadway width rather than deck width or number of lanes is the more critical width measurement for culverts. Culverts often extend much further to the sides of a roadway than pavement does since culverts must clear the edges of an embankment or reach another flow channel. This is an impressive and logically correct assessment by the random forest model and builds trust in the reasonableness of this classification.
 
 With the notion that the formation of some scores may be related to others, we wanted to examine the combined feature importance for all condition types too:
 
 
-![image](8.PNG){:height="100%" width="100%"}
+![combined](8.PNG){:height="100%" width="100%"}
 
 <br>
 
@@ -248,41 +248,41 @@ Following the methods described in the Neural Net section above, we created 5 in
 
 *Deck Condition Neural Net*
 
-![image](dnn1.PNG){:height="100%" width="100%"}
+![dnn1](dnn1.PNG){:height="100%" width="100%"}
 
-![image](dnn2.PNG){:height="100%" width="100%"}
+![dnn2](dnn2.PNG){:height="100%" width="100%"}
 
 <br>
 
 *Superstructure Condition Neural Net*
 
-![image](snn1.PNG){:height="100%" width="100%"}
+![snn1](snn1.PNG){:height="100%" width="100%"}
 
-![image](snn2.PNG){:height="100%" width="100%"}
+![snn2](snn2.PNG){:height="100%" width="100%"}
 
 <br>
 
 *Substructure Condition Neural Net*
 
-![image](xnn1.PNG){:height="100%" width="100%"}
+![xnn1](xnn1.PNG){:height="100%" width="100%"}
 
-![image](xnn2.PNG){:height="100%" width="100%"}
+![xnn2](xnn2.PNG){:height="100%" width="100%"}
 
 <br>
 
 *Channel Condition Neural Net*
 
-![image](cnn1.PNG){:height="100%" width="100%"}
+![cnn1](cnn1.PNG){:height="100%" width="100%"}
 
-![image](cnn2.PNG){:height="100%" width="100%"}
+![cnn2](cnn2.PNG){:height="100%" width="100%"}
 
 <br>
 
 *Culvert Condition Neural Net*
 
-![image](unn1.PNG){:height="100%" width="100%"}
+![unn1](unn1.PNG){:height="100%" width="100%"}
 
-![image](unn2.PNG){:height="100%" width="100%"}
+![unn2](unn2.PNG){:height="100%" width="100%"}
 
 Notice that in all cases our models converge on the objective to some degree. We consistently observed declining loss and increasing accuracy over duration of model training, but did not notice significant improvement past 100 epochs. Overall accuracies for these models range from 72% to 92%, however, it would be unsuitable to only examine the overall accuracy. When examining the individual class accuracies, we notice that our NA (2)  class performs excellent across the board in each model with precision, recall, and f1 all above 95%. But our BAD (1) class achieves scores between 70% and 80% while GOOD (1) trails slightly behind. This is less than ideal as our primary objective is to estimate condition scores of GOOD and BAD bridges as best as possible. Our random forest classifiers above performed from 10% to 15% better in most cases and we would therefore recommend using these models as of now. However, with further refinement to neural net structure, training parameters, and balanced data these accuracies might improve more. Given the opportunity of continued development, we also believe it is worthwhile exploring the creation of a multi classification model which handles all 5 condition types simultaneously. This kind of model may experience increased accuracies as a result of constructive interference, which we believe would be the case due to the high level of joint variability of various condition scores represented in the covariance matrix discussed in our data section above.
 
