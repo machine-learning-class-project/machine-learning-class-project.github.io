@@ -315,5 +315,7 @@ Through the methods and results described above, we have identified characterist
 # References 
 
 [1] ASCE's 2017 Infrastructure Report Card. 2017. Bridges. [online] Available at: <https://www.infrastructurereportcard.org/cat-item/bridges/> [Accessed: 5 November 2020].
+
 [2] “Public Disclosure of National Bridge Inventory (NBI) Data - National Bridge Inventory - Bridge Inspection - Safety - Bridges & Structures - Federal Highway Administration.” [Online]. Available: https://www.fhwa.dot.gov/bridge/nbi/20070517.cfm. [Accessed: 5 November 2020].
+
 [3] P. Chen, B. Liao, G. Chen, and S. Zhang, “Understanding and Utilizing Deep Neural Networks Trained with Noisy Labels,” arXiv.org, 13-May-2019. [Online]. Available: https://arxiv.org/abs/1905.05040. [Accessed: 08-Dec-2020]. 
